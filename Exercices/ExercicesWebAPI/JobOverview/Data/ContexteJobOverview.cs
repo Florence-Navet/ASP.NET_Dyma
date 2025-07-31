@@ -7,6 +7,7 @@ namespace JobOverview.Data
 {
     public class ContexteJobOverview : DbContext
     {
+        
         public ContexteJobOverview(DbContextOptions options) : base(options)
         {
         }
