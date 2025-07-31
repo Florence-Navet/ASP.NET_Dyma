@@ -86,6 +86,61 @@ namespace Northwind2_v36.Data
 					l => l.HasOne<Employe>().WithMany().HasForeignKey(a => a.IdEmploye),
 					r => r.HasOne<Territoire>().WithMany().HasForeignKey(a => a.IdTerritoire));
 			});
-		}
-	}
+
+			// Exemple de syntaxe pour créer un jeu de données par le code
+
+			if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+			{
+				//modelBuilder.Entity<Adresse>().HasData(
+				//	new Adresse
+				//	{
+				//		Id = new Guid("01fcbc07-b6ba-4f3a-ac69-891e5a41b14e"),
+				//		Rue = "1600 route des milles",
+				//		Ville = "Aix en provence",
+				//		CodePostal = "13070",
+				//		Pays = "France",
+				//		Region = "PACA",
+				//		Tel = "07 33 33 33 33"
+				//	},
+				//	new Adresse
+				//	{
+				//		Id = new Guid("02fcbc07-b6ba-4f3a-ac69-891e5a41b14e"),
+				//		Rue = "Cheongdam Fashion Street",
+				//		Ville = "Séoul",
+				//		CodePostal = "150000",
+				//		Pays = "Corée du Sud",
+				//		Region = "Gangnam",
+				//		Tel = "01 98 76 54 32"
+				//	});
+			
+
+                /*modelBuilder.Entity<Employe>().HasData(
+				new Employe
+				{
+					Id = 11,
+					Nom = "Mousquet",
+					Prenom = "Kévin",
+					IdManager = 2,
+					Fonction = "Architect Engeneer",
+					Civilite = "Mr.",
+					DateNaissance = new DateTime(1994, 11, 01),
+					DateEmbauche = new DateTime(2020, 10, 01),
+					IdAdresse = new Guid("01fcbc07-b6ba-4f3a-ac69-891e5a41b14e")
+				},
+				new Employe
+				{
+					Id = 12,
+					Nom = "Park",
+					Prenom = "Shin Hee",
+					IdManager = 2,
+					Fonction = "Sales Representative",
+					Civilite = "Mrs.",
+					DateNaissance = new DateTime(2000, 5, 20),
+					DateEmbauche = new DateTime(2023, 10, 11),
+					IdAdresse = new Guid("01fcbc07-b6ba-4f3a-ac69-891e5a41b14e")
+				});*/
+			}
+
+        }
+    }
 }
