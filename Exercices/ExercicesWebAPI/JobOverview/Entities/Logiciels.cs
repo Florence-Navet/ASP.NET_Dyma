@@ -29,7 +29,7 @@ namespace JobOverview.Entities
     {
         public float Numero { get; set; }
         public string CodeLogiciel { get; set; } = "";
-        public short Millesime { get; set; }
+        public int Millesime { get; set; }
         public DateOnly DateOuverture { get; set; }
         public DateTime DateSortiePrevue { get; set; }
         public DateTime? DateSortieReelle { get; set; }
