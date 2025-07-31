@@ -1,4 +1,8 @@
-﻿namespace Northwind2_v36.Entities
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Northwind2_v36.Entities
 {
 	public class Employe
 	{
@@ -35,10 +39,21 @@
 
 	public class Territoire
 	{
-		public string Id { get; set; } = string.Empty;
+		//[Key, MaxLength(20), Unicode(false)]
+        public string Id { get; set; } = string.Empty;
+
+		//[ForeignKey("Région")]
 		public int IdRegion { get; set; }
-		public string Nom { get; set; } = string.Empty;
-	}
+
+
+		//[MaxLength(40)]
+        public string Nom { get; set; } = string.Empty;
+
+        //propriété de navigation - elle doit être virtuelle pour EF Core - équivalent de on delete no action
+        //[DeleteBehavior(DeleteBehavior.NoAction)]
+
+        //public virtual Region Région { get; set; } = null!; // ! pour indiquer que cette propriété ne sera jamais nulle
+    }
 
 	public class Region
 	{

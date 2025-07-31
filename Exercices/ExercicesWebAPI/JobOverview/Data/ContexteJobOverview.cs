@@ -39,6 +39,11 @@ namespace JobOverview.Data
                 entity.Property(e => e.codeFiliere).HasMaxLength(20).IsUnicode(false);
                 entity.Property(e => e.Nom).HasMaxLength(60).IsUnicode(false);
 
+                entity.HasOne<Filiere>().WithMany()
+                     .HasForeignKey(d => d.codeFiliere)
+                     .OnDelete(DeleteBehavior.NoAction);
+
+
             });
 
             modelBuilder.Entity<Module>(entity =>
@@ -51,10 +56,20 @@ namespace JobOverview.Data
                 entity.Property(e => e.CodeLogicielParent).HasMaxLength(20).IsUnicode(false);
                 entity.Property(e => e.Nom).HasMaxLength(20).IsUnicode(false);
 
+
+                entity.HasOne<Logiciel>().WithMany()
+                    .HasForeignKey(d => d.CodeLogiciel)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasOne<Module>().WithMany()
+                    .HasForeignKey(d => new {d.CodeModuleParent, d.CodeLogicielParent })
+                    .OnDelete(DeleteBehavior.NoAction)
+                    .HasConstraintName("FKModulesCodeModParentCodeLogParent"); // pour changer le nom de la contrainte
+
             });
 
             modelBuilder.Entity<Version>(entity =>
-            {
+            { 
                 entity.HasKey(e => new { e.Numero, e.CodeLogiciel });
 
                 entity.Property(e => e.Numero);
@@ -63,6 +78,12 @@ namespace JobOverview.Data
                 entity.Property(e => e.DateOuverture);
                 entity.Property(e => e.DateSortiePrevue);
                 entity.Property(e => e.DateSortieReelle);
+
+
+                entity.HasOne<Logiciel>().WithMany()
+                        .HasForeignKey(d => d.CodeLogiciel)
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("FKversionLogCodeLog");
 
             });
 
@@ -74,6 +95,8 @@ namespace JobOverview.Data
                 entity.Property(e => e.CodeLogiciel).HasMaxLength(20).IsUnicode(false);
                 entity.Property(e => e.DatePubli);
 
+                entity.HasOne<Version>().WithMany()
+                        .HasForeignKey(d => new { d.Numero, d.CodeLogiciel }); // on ne met rien pour suppression en cascade
 
             });
         }
