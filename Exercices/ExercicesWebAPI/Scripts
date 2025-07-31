@@ -1,0 +1,50 @@
+﻿CREATE TABLE [Filieres] (
+    [Code] varchar(20) NOT NULL,
+    [Nom] varchar(60) NOT NULL,
+    CONSTRAINT [PK_Filieres] PRIMARY KEY ([Code])
+);
+GO
+
+
+CREATE TABLE [Logiciels] (
+    [Code] varchar(20) NOT NULL,
+    [codeFiliere] varchar(20) NOT NULL,
+    [Nom] varchar(60) NOT NULL,
+    CONSTRAINT [PK_Logiciels] PRIMARY KEY ([Code])
+);
+GO
+
+
+CREATE TABLE [Modules] (
+    [Code] varchar(20) NOT NULL,
+    [CodeLogiciel] varchar(20) NOT NULL,
+    [Nom] varchar(20) NOT NULL,
+    [CodeModuleParent] varchar(20) NULL,
+    [CodeLogicielParent] varchar(20) NULL,
+    CONSTRAINT [PK_Modules] PRIMARY KEY ([Code], [CodeLogiciel])
+);
+GO
+
+
+CREATE TABLE [Releases] (
+    [Numero] real NOT NULL,
+    [NumeroVersion] real NOT NULL,
+    [CodeLogiciel] varchar(20) NOT NULL,
+    [DatePubli] datetime2 NOT NULL,
+    CONSTRAINT [PK_Releases] PRIMARY KEY ([Numero], [NumeroVersion], [CodeLogiciel])
+);
+GO
+
+
+CREATE TABLE [Versions] (
+    [Numero] real NOT NULL,
+    [CodeLogiciel] varchar(20) NOT NULL,
+    [Millesime] smallint NOT NULL,
+    [DateOuverture] date NOT NULL,
+    [DateSortiePrevue] datetime2 NOT NULL,
+    [DateSortieReelle] datetime2 NULL,
+    CONSTRAINT [PK_Versions] PRIMARY KEY ([Numero], [CodeLogiciel])
+);
+GO
+
+
