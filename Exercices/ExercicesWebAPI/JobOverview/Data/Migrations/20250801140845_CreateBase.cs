@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace JobOverview.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class CreationBase : Migration
+    public partial class CreateBase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +18,7 @@ namespace JobOverview.Data.Migrations
                 columns: table => new
                 {
                     Code = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
-                    Nom = table.Column<string>(type: "varchar(60)", unicode: false, maxLength: 60, nullable: false)
+                    Nom = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,15 +30,15 @@ namespace JobOverview.Data.Migrations
                 columns: table => new
                 {
                     Code = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
-                    codeFiliere = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
+                    CodeFiliere = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
                     Nom = table.Column<string>(type: "varchar(60)", unicode: false, maxLength: 60, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Logiciels", x => x.Code);
                     table.ForeignKey(
-                        name: "FK_Logiciels_Filieres_codeFiliere",
-                        column: x => x.codeFiliere,
+                        name: "FK_Logiciels_Filieres_CodeFiliere",
+                        column: x => x.CodeFiliere,
                         principalTable: "Filieres",
                         principalColumn: "Code");
                 });
@@ -47,7 +49,7 @@ namespace JobOverview.Data.Migrations
                 {
                     Code = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
                     CodeLogiciel = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
-                    Nom = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
+                    Nom = table.Column<string>(type: "varchar(60)", unicode: false, maxLength: 60, nullable: false),
                     CodeModuleParent = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: true),
                     CodeLogicielParent = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: true)
                 },
@@ -55,15 +57,15 @@ namespace JobOverview.Data.Migrations
                 {
                     table.PrimaryKey("PK_Modules", x => new { x.Code, x.CodeLogiciel });
                     table.ForeignKey(
-                        name: "FKModulesCodeModParentCodeLogParent",
-                        columns: x => new { x.CodeModuleParent, x.CodeLogicielParent },
-                        principalTable: "Modules",
-                        principalColumns: new[] { "Code", "CodeLogiciel" });
-                    table.ForeignKey(
                         name: "FK_Modules_Logiciels_CodeLogiciel",
                         column: x => x.CodeLogiciel,
                         principalTable: "Logiciels",
                         principalColumn: "Code");
+                    table.ForeignKey(
+                        name: "FK_Modules_Modules_CodeModuleParent_CodeLogicielParent",
+                        columns: x => new { x.CodeModuleParent, x.CodeLogicielParent },
+                        principalTable: "Modules",
+                        principalColumns: new[] { "Code", "CodeLogiciel" });
                 });
 
             migrationBuilder.CreateTable(
@@ -73,7 +75,7 @@ namespace JobOverview.Data.Migrations
                     Numero = table.Column<float>(type: "real", nullable: false),
                     CodeLogiciel = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
                     Millesime = table.Column<short>(type: "smallint", nullable: false),
-                    DateOuverture = table.Column<DateOnly>(type: "date", nullable: false),
+                    DateOuverture = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateSortiePrevue = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateSortieReelle = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -81,7 +83,7 @@ namespace JobOverview.Data.Migrations
                 {
                     table.PrimaryKey("PK_Versions", x => new { x.Numero, x.CodeLogiciel });
                     table.ForeignKey(
-                        name: "FKversionLogCodeLog",
+                        name: "FK_Versions_Logiciels_CodeLogiciel",
                         column: x => x.CodeLogiciel,
                         principalTable: "Logiciels",
                         principalColumn: "Code");
@@ -91,7 +93,7 @@ namespace JobOverview.Data.Migrations
                 name: "Releases",
                 columns: table => new
                 {
-                    Numero = table.Column<float>(type: "real", nullable: false),
+                    Numero = table.Column<short>(type: "smallint", nullable: false),
                     NumeroVersion = table.Column<float>(type: "real", nullable: false),
                     CodeLogiciel = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
                     DatePubli = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -100,17 +102,75 @@ namespace JobOverview.Data.Migrations
                 {
                     table.PrimaryKey("PK_Releases", x => new { x.Numero, x.NumeroVersion, x.CodeLogiciel });
                     table.ForeignKey(
-                        name: "FK_Releases_Versions_Numero_CodeLogiciel",
-                        columns: x => new { x.Numero, x.CodeLogiciel },
+                        name: "FK_Releases_Versions_NumeroVersion_CodeLogiciel",
+                        columns: x => new { x.NumeroVersion, x.CodeLogiciel },
                         principalTable: "Versions",
                         principalColumns: new[] { "Numero", "CodeLogiciel" },
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Logiciels_codeFiliere",
+            migrationBuilder.InsertData(
+                table: "Filieres",
+                columns: new[] { "Code", "Nom" },
+                values: new object[,]
+                {
+                    { "BIOA", "Support animale" },
+                    { "BIOH", "Biologie humaine" },
+                    { "BIOV", "Biologie végétale" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Logiciels",
-                column: "codeFiliere");
+                columns: new[] { "Code", "CodeFiliere", "Nom" },
+                values: new object[,]
+                {
+                    { "ANATOMIA", "BIOH", "Anatomia" },
+                    { "GENOMICA", "BIOH", "Genomica" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Modules",
+                columns: new[] { "Code", "CodeLogiciel", "CodeLogicielParent", "CodeModuleParent", "Nom" },
+                values: new object[,]
+                {
+                    { "FONC", "ANATOMIA", null, null, "Anatomie fonctionnelle" },
+                    { "MICRO", "ANATOMIA", null, null, "Anatomie microscopique" },
+                    { "PARAMETRES", "GENOMICA", null, null, "Paramètres" },
+                    { "PATHO", "ANATOMIA", null, null, "Anatomie pathologique" },
+                    { "POLYMORPHISME", "GENOMICA", null, null, "Polymorphisme génétique" },
+                    { "RADIO", "ANATOMIA", null, null, "Anatomie radiologique" },
+                    { "SEQUENCAGE", "GENOMICA", null, null, "Séquençage" },
+                    { "TOPO", "ANATOMIA", null, null, "Anatomie topographique" },
+                    { "UTILS_ROLES", "GENOMICA", null, null, "Utilisateurs et rôles" },
+                    { "VAR_ALLELE", "GENOMICA", null, null, "Variations alléliques" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Versions",
+                columns: new[] { "CodeLogiciel", "Numero", "DateOuverture", "DateSortiePrevue", "DateSortieReelle", "Millesime" },
+                values: new object[,]
+                {
+                    { "GENOMICA", 1f, new DateTime(2022, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), (short)2023 },
+                    { "GENOMICA", 2f, new DateTime(2022, 12, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), null, (short)2024 },
+                    { "ANATOMIA", 4.5f, new DateTime(2021, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), (short)2022 },
+                    { "ANATOMIA", 5f, new DateTime(2022, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 3, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 3, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), (short)2023 },
+                    { "ANATOMIA", 5.5f, new DateTime(2023, 3, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), null, (short)2024 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Modules",
+                columns: new[] { "Code", "CodeLogiciel", "CodeLogicielParent", "CodeModuleParent", "Nom" },
+                values: new object[,]
+                {
+                    { "ANALYSE", "GENOMICA", "GENOMICA", "SEQUENCAGE", "Analyse" },
+                    { "MARQUAGE", "GENOMICA", "GENOMICA", "SEQUENCAGE", "Marquage" },
+                    { "SEPARATION", "GENOMICA", "GENOMICA", "SEQUENCAGE", "Séparation" }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Logiciels_CodeFiliere",
+                table: "Logiciels",
+                column: "CodeFiliere");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Modules_CodeLogiciel",
@@ -123,9 +183,9 @@ namespace JobOverview.Data.Migrations
                 columns: new[] { "CodeModuleParent", "CodeLogicielParent" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Releases_Numero_CodeLogiciel",
+                name: "IX_Releases_NumeroVersion_CodeLogiciel",
                 table: "Releases",
-                columns: new[] { "Numero", "CodeLogiciel" });
+                columns: new[] { "NumeroVersion", "CodeLogiciel" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Versions_CodeLogiciel",

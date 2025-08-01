@@ -1,6 +1,4 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace JobOverview.Entities
+﻿namespace JobOverview.Entities
 {
     public class Filiere
     {
@@ -8,19 +6,19 @@ namespace JobOverview.Entities
         public string Nom { get; set; } = "";
     }
 
-    public class Logiciel 
+    public class Logiciel
     {
         public string Code { get; set; } = "";
-        public string codeFiliere { get; set; } = "";
+        public string CodeFiliere { get; set; } = "";
         public string Nom { get; set; } = "";
-
     }
 
-    public class Module 
+    public class Module
     {
         public string Code { get; set; } = "";
         public string CodeLogiciel { get; set; } = "";
         public string Nom { get; set; } = "";
+
         public string? CodeModuleParent { get; set; }
         public string? CodeLogicielParent { get; set; }
     }
@@ -30,18 +28,16 @@ namespace JobOverview.Entities
         public float Numero { get; set; }
         public string CodeLogiciel { get; set; } = "";
         public int Millesime { get; set; }
-        public DateOnly DateOuverture { get; set; }
+        public DateTime DateOuverture { get; set; }
         public DateTime DateSortiePrevue { get; set; }
         public DateTime? DateSortieReelle { get; set; }
     }
 
     public class Release
     {
-        public float Numero { get; set; }
+        public short Numero { get; set; }
         public float NumeroVersion { get; set; }
         public string CodeLogiciel { get; set; } = "";
         public DateTime DatePubli { get; set; }
     }
 }
-
-
