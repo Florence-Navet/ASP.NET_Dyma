@@ -4,6 +4,7 @@ using JobOverview.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobOverview.Data.Migrations
 {
     [DbContext(typeof(ContexteJobOverview))]
-    partial class ContexteJobOverviewModelSnapshot : ModelSnapshot
+    [Migration("20250801140845_CreateBase")]
+    partial class CreateBase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,7 +39,7 @@ namespace JobOverview.Data.Migrations
 
                     b.HasKey("Code");
 
-                    b.ToTable("Filieres", (string)null);
+                    b.ToTable("Filieres");
 
                     b.HasData(
                         new
@@ -79,7 +82,7 @@ namespace JobOverview.Data.Migrations
 
                     b.HasIndex("CodeFiliere");
 
-                    b.ToTable("Logiciels", (string)null);
+                    b.ToTable("Logiciels");
 
                     b.HasData(
                         new
@@ -130,7 +133,7 @@ namespace JobOverview.Data.Migrations
 
                     b.HasIndex("CodeModuleParent", "CodeLogicielParent");
 
-                    b.ToTable("Modules", (string)null);
+                    b.ToTable("Modules");
 
                     b.HasData(
                         new
@@ -239,7 +242,7 @@ namespace JobOverview.Data.Migrations
 
                     b.HasIndex("NumeroVersion", "CodeLogiciel");
 
-                    b.ToTable("Releases", (string)null);
+                    b.ToTable("Releases");
                 });
 
             modelBuilder.Entity("JobOverview.Entities.Version", b =>
@@ -268,7 +271,7 @@ namespace JobOverview.Data.Migrations
 
                     b.HasIndex("CodeLogiciel");
 
-                    b.ToTable("Versions", (string)null);
+                    b.ToTable("Versions");
 
                     b.HasData(
                         new
