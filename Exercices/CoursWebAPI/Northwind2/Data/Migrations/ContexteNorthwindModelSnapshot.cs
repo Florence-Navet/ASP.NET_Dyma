@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Northwind2_v36.Data;
+using Northwind2.Data;
 
 #nullable disable
 
-namespace Northwind2_v36.Data.Migrations
+namespace Northwind2.Data.Migrations
 {
     [DbContext(typeof(ContexteNorthwind))]
     partial class ContexteNorthwindModelSnapshot : ModelSnapshot

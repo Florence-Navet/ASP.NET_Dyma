@@ -1,4 +1,4 @@
-namespace Northwind2_v36
+namespace Northwind2
 {
 	public class WeatherForecast
 	{

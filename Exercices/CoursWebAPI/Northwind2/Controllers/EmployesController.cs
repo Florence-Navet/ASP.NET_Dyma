@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Northwind2_v36.Entities;
-using Northwind2_v36.Services;
+using Northwind2.Entities;
+using Northwind2.Services;
 
 namespace Northwind2_v36.Controllers
 {
@@ -17,9 +17,11 @@ namespace Northwind2_v36.Controllers
 
         // GET: api/Employes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employe>>> GetEmployés() // renvoie un resultat de requete
+        public async Task<ActionResult<IEnumerable<Employe>>> GetEmployés(
+            [FromQuery] string? rechercheNom, 
+            [FromQuery] DateTime? dateEmbaucheMax) // renvoie un resultat de requete
         {
-            var employés = await _serviceEmp.ObtenirEmployes();
+            var employés = await _serviceEmp.ObtenirEmployes(rechercheNom, dateEmbaucheMax);
             return Ok(employés); // methode ok de la classe ControllerBase
         }
 
@@ -38,6 +40,17 @@ namespace Northwind2_v36.Controllers
             return Ok(employe);
         }
 
-      
+        [HttpGet("/api/Regions/{id}")]
+        public async Task<ActionResult<Region>> GetRégion(int id)
+        {
+            Region? region = await _serviceEmp.ObtenirRégion(id);
+
+            if (region == null) return NotFound();
+
+            return Ok(region);
+        }
+
+
+
     }
 }

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Northwind2_v36.Entities
+namespace Northwind2.Entities
 {
 	public class Employe
 	{
@@ -17,7 +17,11 @@ namespace Northwind2_v36.Entities
 		public DateTime? DateEmbauche { get; set; }
 		public byte[]? Photo { get; set; }
 		public string? Notes { get; set; }
-	}
+
+		//propriété de navigation
+		public virtual Adresse Adresse { get; set; } = null!;
+		public virtual List<Territoire> Territoires { get; set; } = new();
+    }
 
 	public class Adresse
 	{
@@ -49,6 +53,9 @@ namespace Northwind2_v36.Entities
 		//[MaxLength(40)]
         public string Nom { get; set; } = string.Empty;
 
+		//propriété de navigation
+		public virtual Region Région { get; set; } = null!;
+
         //propriété de navigation - elle doit être virtuelle pour EF Core - équivalent de on delete no action
         //[DeleteBehavior(DeleteBehavior.NoAction)]
 
@@ -59,5 +66,9 @@ namespace Northwind2_v36.Entities
 	{
 		public int Id { get; set; }
 		public string Nom { get; set; } = string.Empty;
-	}
+
+        //propriété de navigation - elle doit être virtuelle pour EF Core
+        // elle est initialisée pour éviter les problèmes de nullité
+        public virtual List<Territoire> Territoires { get; set; } = new();
+    }
 }

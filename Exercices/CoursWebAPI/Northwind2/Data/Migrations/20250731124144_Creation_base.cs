@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Northwind2_v36.Data.Migrations
+namespace Northwind2.Data.Migrations
 {
     /// <inheritdoc />
     public partial class Creation_base : Migration
