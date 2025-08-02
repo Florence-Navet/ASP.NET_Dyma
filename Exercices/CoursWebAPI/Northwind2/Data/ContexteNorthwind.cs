@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Northwind2_v36.Entities;
+using Northwind2.Entities;
 
-namespace Northwind2_v36.Data
+namespace Northwind2.Data
 {
 	public class ContexteNorthwind : DbContext
 	{
@@ -45,7 +45,7 @@ namespace Northwind2_v36.Data
 				entity.HasOne<Employe>().WithMany().HasForeignKey(d => d.IdManager);
 
 				// Relation Employe - Adresse de cardinalités 0,1 - 1,1
-				entity.HasOne<Adresse>().WithOne().HasForeignKey<Employe>(d => d.IdAdresse)
+				entity.HasOne<Adresse>(e => e.Adresse).WithOne().HasForeignKey<Employe>(d => d.IdAdresse)
 					.OnDelete(DeleteBehavior.NoAction);
 			});
 
@@ -78,11 +78,11 @@ namespace Northwind2_v36.Data
 				entity.Property(e => e.Id).HasMaxLength(20).IsUnicode(false);
 				entity.Property(e => e.Nom).HasMaxLength(40);
 
-				entity.HasOne<Region>().WithMany().HasForeignKey(d => d.IdRegion)
+				entity.HasOne<Region>(t => t.Région).WithMany(r => r.Territoires).HasForeignKey(d => d.IdRegion)
 								.OnDelete(DeleteBehavior.NoAction);
 
 				// Crée la relation N-N avec Employe en utilisant l'entité Affectation comme entité d'association
-				entity.HasMany<Employe>().WithMany().UsingEntity<Affectation>(
+				entity.HasMany<Employe>().WithMany(e => e.Territoires).UsingEntity<Affectation>(
 					l => l.HasOne<Employe>().WithMany().HasForeignKey(a => a.IdEmploye),
 					r => r.HasOne<Territoire>().WithMany().HasForeignKey(a => a.IdTerritoire));
 			});

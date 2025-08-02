@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Northwind2_v36.Data;
+using Northwind2.Data;
 
 #nullable disable
 
-namespace Northwind2_v36.Data.Migrations
+namespace Northwind2.Data.Migrations
 {
     [DbContext(typeof(ContexteNorthwind))]
     [Migration("20250731124144_Creation_base")]
