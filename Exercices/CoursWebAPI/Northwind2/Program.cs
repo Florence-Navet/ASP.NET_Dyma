@@ -1,6 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Northwind2_v36.Data;
+using Northwind2_v36.Services;
 using System;
 
 namespace Northwind2_v36
@@ -19,15 +21,20 @@ namespace Northwind2_v36
 			// en lui indiquant la connexion à utiliser
 			builder.Services.AddDbContext<ContexteNorthwind>(opt => opt.UseSqlServer(connect));
 
-			builder.Services.AddControllers();
+            //enregistre les services métier
+            // il aura la duree de vie d'une requête HTTP
+            builder.Services.AddScoped<IServiceEmployes, ServiceEmployes>();
+
+            builder.Services.AddControllers();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 
 			var app = builder.Build();
 
-			// Configure the HTTP request pipeline.
-			if (app.Environment.IsDevelopment())
+            // Configure the HTTP request pipeline.
+            // Si l'application est en mode développement, active Swagger
+            if (app.Environment.IsDevelopment())
 			{
 				app.UseSwagger();
 				app.UseSwaggerUI();
