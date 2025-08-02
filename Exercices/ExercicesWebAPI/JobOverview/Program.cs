@@ -1,6 +1,6 @@
 using JobOverview.Data;
+using JobOverview_v55.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 
 namespace JobOverview
@@ -19,6 +19,10 @@ namespace JobOverview
             // Enregistre la classe de contexte de données comme service
             // en lui indiquant la connexion à utiliser
             builder.Services.AddDbContext<ContexteJobOverview>(opt => opt.UseSqlServer(connect));
+
+
+            // Enregistre le service de gestion des logiciels
+            builder.Services.AddScoped<IServiceLogiciels, ServiceLogiciels>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
